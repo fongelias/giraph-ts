@@ -1,11 +1,13 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
-    "target": "es2015",
-    "declaration": true,
-    "outDir": "dist"
-  },
-  "include": [
-    "src/**/*"
-  ]
+  	"declaration": true,
+    "esModuleInterop": true,
+    "lib": ["es2016", "es2019.array"],
+    "module": "es6",
+    "moduleResolution": "node",
+    "target": "es5",
+    "outDir": "dist",
+    "strict": true,
+    "baseUrl": "src"
+  }
 }
