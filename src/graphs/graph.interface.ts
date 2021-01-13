@@ -1,0 +1,1 @@
+import { Vertex } from 'verticies';
