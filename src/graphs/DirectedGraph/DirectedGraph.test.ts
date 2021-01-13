@@ -1,12 +1,11 @@
-import { AdjacencyList } from './AdjacencyList';
-import { DirectedEdge } from 'edges';
+import { DirectedGraph } from './DirectedGraph';
 
-describe('AdjacencyList', () => {
+describe('DirectedGraph', () => {
 	const vertex = "test vertex";
-	let graph: AdjacencyList<string, DirectedEdge<string>>;
+	let graph: DirectedGraph<string>;
 
 	beforeEach(() => {
-		graph = new AdjacencyList<string, DirectedEdge<string>>(DirectedEdge);
+		graph = new DirectedGraph<string>();
 	});
 
 	describe('#addVertex', () => {
@@ -82,11 +81,11 @@ describe('AdjacencyList', () => {
 			expect(graph.hasVertex(fromVertex)).toBe(false);
 			expect(graph.hasVertex(toVertex)).toBe(false);
 			// attempt to add edge
-			expect(graph.addEdge(fromVertex, toVertex)).toThrow();
+			expect(() => graph.addEdge(fromVertex, toVertex)).toThrow();
 			// add one of the verticies
 			graph.addVertex(fromVertex);
 			// attempt to add edge
-			expect(graph.addEdge(fromVertex, toVertex)).toThrow();
+			expect(() => graph.addEdge(fromVertex, toVertex)).toThrow();
 		});
 	});
 
@@ -121,9 +120,9 @@ describe('AdjacencyList', () => {
 			expect(graph.hasVertex(secondVertex)).toBe(false);
 			expect(graph.hasVertex(thirdVertex)).toBe(false);
 			// attempt to remove edge between two non-existing verticies
-			expect(graph.removeEdge(secondVertex, thirdVertex)).toThrow();
+			expect(() => graph.removeEdge(secondVertex, thirdVertex)).toThrow();
 			// attempt to add edge between an existing and non-existing vertex
-			expect(graph.removeEdge(fromVertex, secondVertex)).toThrow();
+			expect(() => graph.removeEdge(fromVertex, secondVertex)).toThrow();
 		});
 	});
 

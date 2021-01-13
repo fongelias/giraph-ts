@@ -3,10 +3,9 @@ import { VertexKey } from 'verticies';
 import { notNull } from 'utilities';
 // associates vertex keys with edges
 // is always directed graph
-export class AdjacencyList<K extends VertexKey, E extends Edge<K>> {
+export abstract class AdjacencyList<K extends VertexKey, E extends Edge<K>> {
 	private verticies: Record<K, Nullable<E[]>> = {} as Record<K, Nullable<E[]>>;
 	private static emptyVertexValue = null;
-
 
 	constructor(
 		private edgeType: new (fromVertex: K, toVertex: K) => E,
@@ -23,7 +22,7 @@ export class AdjacencyList<K extends VertexKey, E extends Edge<K>> {
 	}
 
 	public removeVertex(vertexToRemove: K): boolean {
-		if (this.verticies[vertexToRemove]) {
+		if (!this.verticies[vertexToRemove]) {
 			return false;
 		}
 		// modify all adjacencyLists to remove vertex
