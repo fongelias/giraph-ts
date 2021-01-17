@@ -87,10 +87,6 @@ export abstract class AdjacencyList<K extends VertexKey, E extends Edge<K>> {
 	}
 
 	private getOrCreateEdgeArray(vertex: K): E[] {
-		if (!this.verticies[vertex]) {
-			this.verticies[vertex] = [];
-		}
-
-		return this.verticies[vertex]!;
+		return this.verticies[vertex] ?? [];
 	}
 }
