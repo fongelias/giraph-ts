@@ -3,15 +3,23 @@ import { VertexKey } from 'verticies';
 import { notNull } from 'utilities';
 // associates vertex keys with edges
 // is always directed graph
+// basic implementation is tested in DirectedGraph
 export abstract class AdjacencyList<K extends VertexKey, E extends Edge<K>> {
-	private verticies: Record<K, Nullable<E[]>> = {} as Record<K, Nullable<E[]>>;
+	protected verticies: Record<K, Nullable<E[]>> = {} as Record<K, Nullable<E[]>>;
 	private static emptyVertexValue = null;
 
 	constructor(
 		private edgeType: new (fromVertex: K, toVertex: K) => E,
 	) {}
 
+	public getEdgeType(): new (fromVertex: K, toVertex: K) => E {
+		return this.edgeType;
+	}
+
 	public addVertex(vertexToAdd: K): void {
+		if (this.hasVertex(vertexToAdd)) {
+			throw new Error("cannot add an existing vertex");
+		}
 		this.verticies[vertexToAdd] = [];
 	}
 

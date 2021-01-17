@@ -1,5 +1,6 @@
 import { DirectedGraph } from './DirectedGraph';
 
+// This tests abstract class AdjacencyList
 describe('DirectedGraph', () => {
 	const vertex = "test vertex";
 	let graph: DirectedGraph<string>;
@@ -13,6 +14,11 @@ describe('DirectedGraph', () => {
 			graph.addVertex(vertex);
 			expect(graph.hasVertex(vertex)).toBe(true);
 		});
+
+		it('should throw an error if the vertex already exists', () => {
+			graph.addVertex(vertex);
+			expect(() => graph.addVertex(vertex)).toThrow();
+		})
 	});
 
 	describe('#hasVertex', () => {
