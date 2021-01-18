@@ -1,6 +1,9 @@
 language: node_js
 node_js:
   - 14.15.3
+branches:
+  only:
+  - deploy
 install:
   - yarn install
 script:
