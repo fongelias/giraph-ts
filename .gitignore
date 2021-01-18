@@ -6,3 +6,4 @@ dist/
 
 # log files:
 yarn-error.log
+.DS_Store
