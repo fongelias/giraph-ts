@@ -6,9 +6,9 @@
     "module": "es6",
     "moduleResolution": "node",
     "target": "es5",
-    "outDir": "dist",
+    "outDir": "lib",
     "strict": true,
     "baseUrl": "src"
   },
-  "exclude": ["dist/**/*", "**/*.test.*"]
+  "exclude": ["lib/**/*", "**/*.test.*"]
 }
