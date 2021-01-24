@@ -1,14 +1,14 @@
 import { DirectedEdge } from 'edges';
-import { VertexKey, Vertex } from 'verticies';
+import { VertexKey } from 'verticies';
 import { notNull } from 'utilities';
+import { BaseGraphBehavior, BasicVertexBehavior } from 'graphs';
+
 // associates vertex keys with edges
 // is always directed graph
 // basic implementation is tested in DirectedGraph
-export class AdjacencyList<K extends VertexKey, E extends DirectedEdge<K>> {
+export class AdjacencyList<K extends VertexKey, E extends DirectedEdge<K>> implements BaseGraphBehavior<K>, BasicVertexBehavior<K> {
 	private verticies: Record<K, Nullable<E[]>> = {} as Record<K, Nullable<E[]>>;
 	private static emptyVertexValue = null;
-
-	constructor() {}
 
 	public hasVerticies(): boolean {
 		return Object.values(this.verticies)

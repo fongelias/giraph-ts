@@ -1,26 +1,11 @@
-import { Vertex, VertexKey } from "verticies";
+import { VertexKey } from "verticies";
 
-
-// Properties to support:
-// Direction, Undirectedness
-// Weights
-// Vertex values
-// Start with base graphs
-
-// See if we can decompose them after into behaviors
-export interface DirectedGraph {}
-
-export interface DirectedWeightedGraph {}
-
-export interface UndirectedGraph {}
-
-export interface UndirectedWeightedGraph {}
-
-// Graph Behaviors
+// Basic Behaviors
 export interface BaseGraphBehavior<K extends VertexKey> {
   hasVertex: (vertexKey: K) => boolean;
   adjacent: (fromVertex: K, toVertex: K) => boolean;
-  neighbors: (vertexKey: K) => boolean;
+  neighbors: (vertexKey: K) => K[];
+  // Edge behaviors are tied to the atomic implementation, and a "base graph" refers to such implementation
 }
 
 export interface BasicVertexBehavior<K extends VertexKey> {
@@ -28,6 +13,7 @@ export interface BasicVertexBehavior<K extends VertexKey> {
   removeVertex: (vertex: K) => boolean;
 }
 
+// Compositional Behaviors
 export interface StructuredVertexBehavior<K extends VertexKey, V> {
   addVertex: (vertexKey: K, vertexValue: V) => boolean;
   removeVertex: (vertex: K) => boolean;
