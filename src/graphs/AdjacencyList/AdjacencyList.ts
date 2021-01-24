@@ -1,36 +1,49 @@
-import { Edge } from 'edges';
-import { VertexKey } from 'verticies';
+import { DirectedEdge } from 'edges';
+import { VertexKey, Vertex } from 'verticies';
 import { notNull } from 'utilities';
 // associates vertex keys with edges
 // is always directed graph
 // basic implementation is tested in DirectedGraph
-export abstract class AdjacencyList<K extends VertexKey, E extends Edge<K>> {
-	protected verticies: Record<K, Nullable<E[]>> = {} as Record<K, Nullable<E[]>>;
+export class AdjacencyList<K extends VertexKey, E extends DirectedEdge<K>> {
+	private verticies: Record<K, Nullable<E[]>> = {} as Record<K, Nullable<E[]>>;
 	private static emptyVertexValue = null;
 
-	constructor(
-		private edgeType: new (fromVertex: K, toVertex: K) => E,
-	) {}
+	constructor() {}
 
-	public getEdgeType(): new (fromVertex: K, toVertex: K) => E {
-		return this.edgeType;
+	public hasVerticies(): boolean {
+		return Object.values(this.verticies)
+			.filter((val) => notNull(val as Nullable<E[]>))
+			.length > 0;
 	}
 
-	public addVertex(vertexToAdd: K): void {
-		if (this.hasVertex(vertexToAdd)) {
-			throw new Error("cannot add an existing vertex");
+	public addEdge(edge: E): boolean {
+		this.verifyVerticiesExist(edge.fromVertex(), edge.toVertex());
+		// check if edge exists
+		if (this.adjacent(edge.fromVertex(), edge.toVertex())) {
+			return false;
 		}
-		this.verticies[vertexToAdd] = [];
+		// assumes directed edge
+		this.getOrCreateEdgeArray(edge.fromVertex()).push(edge);
+		return true;
 	}
 
-	public hasVertex(vertex: K): boolean {
-		const vertexNotRemoved = (vertex: K) => this.verticies[vertex] != AdjacencyList.emptyVertexValue;
+  public addVertex(vertexKey: K): boolean {
+		if (this.hasVertex(vertexKey)) {
+			return false;
+		}
 
-		return vertex in this.verticies && vertexNotRemoved(vertex);
+		this.verticies[vertexKey] = [];
+		return true;
+	}
+
+	public hasVertex(vertexKey: K): boolean {
+		const vertexNotRemoved = (vertexKey: K) => this.verticies[vertexKey] != AdjacencyList.emptyVertexValue;
+
+		return vertexKey in this.verticies && vertexNotRemoved(vertexKey);
 	}
 
 	public removeVertex(vertexToRemove: K): boolean {
-		if (!this.verticies[vertexToRemove]) {
+		if (!this.hasVertex(vertexToRemove)) {
 			return false;
 		}
 		// modify all adjacencyLists to remove vertex
@@ -39,7 +52,7 @@ export abstract class AdjacencyList<K extends VertexKey, E extends Edge<K>> {
 
 		allEdges.forEach((edge: E) => {
 			if (edge.connects(vertexToRemove)) {
-				this.removeEdge(edge.fromVertex, edge.toVertex);
+				this.removeEdge(edge.fromVertex(), edge.toVertex());
 			}
 		});
 		// using null instead of delete for performance
@@ -47,20 +60,7 @@ export abstract class AdjacencyList<K extends VertexKey, E extends Edge<K>> {
 		return true;
 	}
 
-	public addEdge(fromVertex: K, toVertex: K): void {
-		if (!this.hasVertex(fromVertex) || !this.hasVertex(toVertex)) {
-			throw new Error('cannot create edge between one or more non-existing verticies');
-		}
-		// edge should always have direction
-		const edge: E = new this.edgeType(fromVertex, toVertex);
-		this.getOrCreateEdgeArray(fromVertex).push(edge);
-	}
-
 	public removeEdge(fromVertex: K, toVertex: K): boolean {
-		if (!this.hasVertex(fromVertex) || !this.hasVertex(toVertex)) {
-			throw new Error('cannot create edge between one or more non-existing verticies');
-		}
-
 		const newEdges = this.getOrCreateEdgeArray(fromVertex).filter(edge => !edge.connects(toVertex));
 		const currLength = this.getOrCreateEdgeArray(fromVertex).length;
 		this.verticies[fromVertex] = newEdges;
@@ -69,6 +69,8 @@ export abstract class AdjacencyList<K extends VertexKey, E extends Edge<K>> {
 	}
 
 	public adjacent(fromVertex: K, toVertex: K): boolean {
+		this.verifyVerticiesExist(fromVertex, toVertex);
+
 		for (const edge of this.getOrCreateEdgeArray(fromVertex)) {
 			if (edge.connects(toVertex)) {
 				return true;
@@ -78,15 +80,21 @@ export abstract class AdjacencyList<K extends VertexKey, E extends Edge<K>> {
 		return false;
 	}
 
-	public neighbors(vertex: K): K[] | null {
-		if (!this.hasVertex(vertex)) {
-			return AdjacencyList.emptyVertexValue;
-		}
+	public neighbors(vertexKey: K): K[] {
+		this.verifyVerticiesExist(vertexKey);
 
-		return this.getOrCreateEdgeArray(vertex).map((edge) => edge.toVertex);
+		return this.getOrCreateEdgeArray(vertexKey).map((edge: DirectedEdge<K>) => edge.toVertex());
 	}
 
-	private getOrCreateEdgeArray(vertex: K): E[] {
-		return this.verticies[vertex] ?? [];
+	private getOrCreateEdgeArray(vertexKey: K): E[] {
+		return this.verticies[vertexKey] ?? [];
+	}
+
+	private verifyVerticiesExist(...vertexKeys: K[]): void {
+		for (const vertexKey of vertexKeys) {
+			if (!this.hasVertex(vertexKey as K)) {
+				throw new Error(`vertex with key \'${vertexKey}\' does not exist`);
+			}
+		}
 	}
 }

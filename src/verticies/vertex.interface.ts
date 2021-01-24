@@ -1,6 +1,5 @@
 export type VertexKey = alphaNumeric;
 
-export interface Vertex<K extends VertexKey, T> {
+export interface Vertex<K extends VertexKey> {
 	name: K;
-	value: T;
 }

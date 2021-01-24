@@ -1,1 +1,0 @@
-export { BasicVertex } from './BasicVertex';

@@ -1,29 +1,26 @@
 import { DirectedEdge } from './DirectedEdge';
 
 describe('DirectedEdge', () => {
-	describe('#connects', () => {
-		const fromVertex = "start";
-		const toVertex = "end";
-		const edge = new DirectedEdge<string>(fromVertex, toVertex);
 
-		describe('if the vertex is connected', () => {
+  const origin = "origin";
+  const destination = "destination";
+  let edge: DirectedEdge<string>;
 
-			it('should return true if the vertex is equivalent to the fromVertex', () => {
-				expect(edge.connects(fromVertex)).toBe(true);
-			});
+  beforeEach(() => {
+    edge = new DirectedEdge<string>(origin, destination);
+  });
 
-			it('should return true if the vertex is equivalent to the toVertex', () => {
-				expect(edge.connects(toVertex)).toBe(true);
-			});
-		});
+  describe('#connects', () => {
+    it('should return true if the vertex is at the origin of the edge', () => {
+      expect(edge.connects(origin)).toBe(true);
+    });
 
-		
-		describe('if the vertex is not connected', () => {
-			const otherVertex = "notConnected";
-			
-			it('should return false', () => {
-				expect(edge.connects(otherVertex)).toBe(false);
-			});
-		});
-	});
-})
+    it('should return true if the vertex is at the destination of the edge', () => {
+      expect(edge.connects(destination)).toBe(true);
+    });
+
+    it('should return false if the vertex is not connected by the edge', () => {
+      expect(edge.connects('neither vertex')).toBe(false);
+    });
+  });
+});
