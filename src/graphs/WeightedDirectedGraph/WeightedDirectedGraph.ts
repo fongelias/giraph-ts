@@ -3,10 +3,10 @@ import { WeightedDirectedEdge } from "edges";
 import { VertexKey } from "verticies";
 
 export class WeightedDirectedGraph<K extends VertexKey, W> implements WeightedDirectedEdgeBehavior<K, W> {
-  private graph: AdjacencyList<K, WeightedDirectedEdge<K>> = new AdjacencyList<K, WeightedDirectedEdge<K>>();
+  private graph: AdjacencyList<K, WeightedDirectedEdge<K, W>> = new AdjacencyList<K, WeightedDirectedEdge<K, W>>();
   
   public addEdge(fromVertex: K, toVertex: K, weight: W): boolean {
-    const newEdge = new WeightedDirectedEdge<K>(fromVertex, toVertex, weight);
+    const newEdge = new WeightedDirectedEdge<K, W>(fromVertex, toVertex, weight);
     return this.graph.addEdge(newEdge);
   }
 
@@ -40,7 +40,7 @@ export class WeightedDirectedGraph<K extends VertexKey, W> implements WeightedDi
     return this.graph.neighbors(vertexKey);
   }
 
-  public edgesFrom(vertexKey: K): DirectedEdge<K>[] {
+  public edgesFrom(vertexKey: K): WeightedDirectedEdge<K, W>[] {
     return this.graph.edgesFrom(vertexKey);
   }
 }
