@@ -12,3 +12,7 @@ deploy:
   provider: npm
   email: $NPM_USER_EMAIL
   api_key: $NPM_AUTH_TOKEN
+  on:
+    branches:
+      only:
+        - deploy
