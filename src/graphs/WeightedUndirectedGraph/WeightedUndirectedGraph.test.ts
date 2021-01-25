@@ -1,13 +1,13 @@
-import { WeightedDirectedGraph } from './WeightedDirectedGraph';
+import { WeightedUndirectedGraph } from './WeightedUndirectedGraph';
 import { WeightedDirectedEdge } from 'edges';
 
-describe('WeightedDirectedGraph', () => {
+describe('WeightedUndirectedGraph', () => {
   const defaultWeight = 1;
   const defaultVertex = "some vertex key";
-  let graph: WeightedDirectedGraph<string, number>;
+  let graph: WeightedUndirectedGraph<string, number>;
 
   beforeEach(() => {
-    graph = new WeightedDirectedGraph<string, number>();
+    graph = new WeightedUndirectedGraph<string, number>();
   });
 
   describe('#addEdge', () => {
@@ -21,19 +21,23 @@ describe('WeightedDirectedGraph', () => {
     it('should add an edge between two verticies', () => {
       // verify edges does not exist
       expect(graph.adjacent(defaultVertex, destinationVertex)).toBe(false);
+      expect(graph.adjacent(destinationVertex, defaultVertex)).toBe(false);
       // create and add edge
       graph.addEdge(defaultVertex, destinationVertex, defaultWeight);
       // verify edge exists
       expect(graph.adjacent(defaultVertex, destinationVertex)).toBe(true);
+      expect(graph.adjacent(destinationVertex, defaultVertex)).toBe(true);
     });
 
     it('should return true when an edge is added', () => {
       // verify edges does not exist
       expect(graph.adjacent(defaultVertex, destinationVertex)).toBe(false);
+      expect(graph.adjacent(destinationVertex, defaultVertex)).toBe(false);
       // create and add edge
       expect(graph.addEdge(defaultVertex, destinationVertex, defaultWeight)).toBe(true);
       // verify edge exists
       expect(graph.adjacent(defaultVertex, destinationVertex)).toBe(true);
+      expect(graph.adjacent(destinationVertex, defaultVertex)).toBe(true);
     });
 
     it('should return false when the edge already exists', () => {
@@ -41,6 +45,7 @@ describe('WeightedDirectedGraph', () => {
       expect(graph.addEdge(defaultVertex, destinationVertex, defaultWeight)).toBe(true);
       // verify edge exists
       expect(graph.adjacent(defaultVertex, destinationVertex)).toBe(true);
+      expect(graph.adjacent(destinationVertex, defaultVertex)).toBe(true);
       // try to add the same edge
       expect(graph.addEdge(defaultVertex, destinationVertex, defaultWeight)).toBe(false);
     });
@@ -50,8 +55,9 @@ describe('WeightedDirectedGraph', () => {
       // add edge
       expect(graph.addEdge(defaultVertex, destinationVertex, expectedWeight)).toBe(true);
       // retrieve edge and verify weight
-      const addedEdge = graph.edgesFrom(defaultVertex)[0];
+      const addedEdge = graph.edgesFrom(destinationVertex)[0];
       expect(addedEdge.getWeight()).toBe(expectedWeight);
+
     });
 
     it('should add throw an error when one or more of the verticies do not exist', () => {
@@ -164,10 +170,12 @@ describe('WeightedDirectedGraph', () => {
       graph.addEdge(defaultVertex, destinationVertex, defaultWeight);
       // verify edge exists
       expect(graph.adjacent(defaultVertex, destinationVertex)).toBe(true);
+      expect(graph.adjacent(destinationVertex, defaultVertex)).toBe(true);
       // remove edge
       graph.removeEdge(defaultVertex, destinationVertex);
       // verify edges does not exist
       expect(graph.adjacent(defaultVertex, destinationVertex)).toBe(false);
+      expect(graph.adjacent(destinationVertex, defaultVertex)).toBe(false);
     });
 
     it('should return true if an edge is removed', () => {
@@ -175,10 +183,12 @@ describe('WeightedDirectedGraph', () => {
       graph.addEdge(defaultVertex, destinationVertex, defaultWeight);
       // verify edge exists
       expect(graph.adjacent(defaultVertex, destinationVertex)).toBe(true);
+      expect(graph.adjacent(destinationVertex, defaultVertex)).toBe(true);
       // remove edge
       expect(graph.removeEdge(defaultVertex, destinationVertex)).toBe(true);
       // verify edges does not exist
       expect(graph.adjacent(defaultVertex, destinationVertex)).toBe(false);
+      expect(graph.adjacent(destinationVertex, defaultVertex)).toBe(false);
     });
 
     it('should return false if the edge does not exist', () => {

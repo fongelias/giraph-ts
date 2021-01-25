@@ -35,7 +35,7 @@ export interface UndirectedEdgeBehavior<K extends VertexKey> {
   removeEdge: (xVertex: K, yVertex: K) => boolean;
 }
 
-export interface UndirectedWeightedEdgeBehavior<K extends VertexKey, W> {
+export interface WeightedUndirectedEdgeBehavior<K extends VertexKey, W> {
   addEdge: (xVertex: K, yVertex: K, weight: W) => boolean;
   removeEdge: (xVertex: K, yVertex: K) => boolean;
 }
