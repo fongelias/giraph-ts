@@ -1,28 +1,12 @@
-import { AdjacencyList } from './AdjacencyList';
-import { DirectedEdge } from 'edges'; 
+import { WeightedDirectedGraph } from './WeightedDirectedGraph';
+import { WeightedDirectedEdge } from 'edges';
 
-describe('AdjacencyList', () => {
-
+describe('WeightedDirectedGraph', () => {
   const defaultVertex = "some vertex key";
-  let graph: AdjacencyList<string, DirectedEdge>;
+  let graph: WeightedDirectedGraph<string, number>;
 
   beforeEach(() => {
-    graph = new AdjacencyList<string, DirectedEdge>();
-  });
-  
-  describe('#hasVerticies', () => {
-    it('should return true if AdjacencyList contains verticies', () => {
-      // verify empty
-      expect(graph.hasVerticies()).toBe(false);
-      // add verticies
-      graph.addVertex(defaultVertex);
-      // verify verticies added
-      expect(graph.hasVerticies()).toBe(true);
-    });
-
-    it('should return false if the graph does not have verticies', () => {
-      expect(graph.hasVerticies()).toBe(false);
-    });
+    graph = new WeightedDirectedGraph<string, number>();
   });
 
   describe('#addEdge', () => {
@@ -37,8 +21,7 @@ describe('AdjacencyList', () => {
       // verify edges does not exist
       expect(graph.adjacent(defaultVertex, destinationVertex)).toBe(false);
       // create and add edge
-      const newEdge = new DirectedEdge<string>(defaultVertex, destinationVertex);
-      graph.addEdge(newEdge);
+      graph.addEdge(defaultVertex, destinationVertex);
       // verify edge exists
       expect(graph.adjacent(defaultVertex, destinationVertex)).toBe(true);
     });
@@ -47,27 +30,48 @@ describe('AdjacencyList', () => {
       // verify edges does not exist
       expect(graph.adjacent(defaultVertex, destinationVertex)).toBe(false);
       // create and add edge
-      const newEdge = new DirectedEdge<string>(defaultVertex, destinationVertex);
-      expect(graph.addEdge(newEdge)).toBe(true);
+      expect(graph.addEdge(defaultVertex, destinationVertex)).toBe(true);
       // verify edge exists
       expect(graph.adjacent(defaultVertex, destinationVertex)).toBe(true);
     });
 
     it('should return false when the edge already exists', () => {
-      // create and add edge
-      const newEdge = new DirectedEdge<string>(defaultVertex, destinationVertex);
-      expect(graph.addEdge(newEdge)).toBe(true);
+      // add edge
+      expect(graph.addEdge(defaultVertex, destinationVertex)).toBe(true);
       // verify edge exists
       expect(graph.adjacent(defaultVertex, destinationVertex)).toBe(true);
       // try to add the same edge
-      expect(graph.addEdge(newEdge)).toBe(false);
+      expect(graph.addEdge(defaultVertex, destinationVertex)).toBe(false);
+    });
+
+    it('should store the weight of the edge', () => {
+      const expectedWeight = 5;
+      // add edge
+      expect(graph.addEdge(defaultVertex, destinationVertex, expectedWeight)).toBe(true);
+      // retrieve edge and verify weight
+      const addedEdge = graph.edgesFrom(defaultVertex)[0];
+      expect(addedEdge.getWeight()).toBe(expectedWeight);
     });
 
     it('should add throw an error when one or more of the verticies do not exist', () => {
       const nonExistentVertex = "this vertex is not on the graph";
-      const newEdge = new DirectedEdge<string>(defaultVertex, nonExistentVertex);
       // attempt to add faulty edge
-      expect(() => graph.addEdge(newEdge)).toThrow();
+      expect(() => graph.addEdge(defaultVertex, nonExistentVertex)).toThrow();
+    });
+  });
+
+  describe('#hasVerticies', () => {
+    it('should return true if AdjacencyList contains verticies', () => {
+      // verify empty
+      expect(graph.hasVerticies()).toBe(false);
+      // add verticies
+      graph.addVertex(defaultVertex);
+      // verify verticies added
+      expect(graph.hasVerticies()).toBe(true);
+    });
+
+    it('should return false if the graph does not have verticies', () => {
+      expect(graph.hasVerticies()).toBe(false);
     });
   });
 
@@ -156,8 +160,7 @@ describe('AdjacencyList', () => {
 
     it('should remove an edge between two verticies', () => {
       // create and add edge
-      const newEdge = new DirectedEdge<string>(defaultVertex, destinationVertex);
-      graph.addEdge(newEdge);
+      graph.addEdge(defaultVertex, destinationVertex);
       // verify edge exists
       expect(graph.adjacent(defaultVertex, destinationVertex)).toBe(true);
       // remove edge
@@ -168,8 +171,7 @@ describe('AdjacencyList', () => {
 
     it('should return true if an edge is removed', () => {
       // create and add edge
-      const newEdge = new DirectedEdge<string>(defaultVertex, destinationVertex);
-      graph.addEdge(newEdge);
+      graph.addEdge(defaultVertex, destinationVertex);
       // verify edge exists
       expect(graph.adjacent(defaultVertex, destinationVertex)).toBe(true);
       // remove edge
@@ -195,9 +197,8 @@ describe('AdjacencyList', () => {
        graph.addVertex(destinationVertex);
       // verify non-adjacency
       expect(graph.adjacent(defaultVertex, destinationVertex)).toBe(false);
-      // create and add edge
-      const newEdge = new DirectedEdge<string>(defaultVertex, destinationVertex);
-      graph.addEdge(newEdge);
+      // add edge
+      graph.addEdge(defaultVertex, destinationVertex);
       // verify adjacency
       expect(graph.adjacent(defaultVertex, destinationVertex)).toBe(true);
     });
@@ -226,11 +227,9 @@ describe('AdjacencyList', () => {
       graph.addVertex(defaultVertex);
       graph.addVertex(firstDestination);
       graph.addVertex(secondDestination);
-      // create and add edges
-      const firstEdge = new DirectedEdge<string>(defaultVertex, firstDestination);
-      const secondEdge = new DirectedEdge<string>(defaultVertex, secondDestination);
-      graph.addEdge(firstEdge);
-      graph.addEdge(secondEdge);
+      // add edges
+      graph.addEdge(defaultVertex, firstDestination);
+      graph.addEdge(defaultVertex, secondDestination);
       // verify neighbors
       expect(graph.neighbors(defaultVertex)).toEqual([firstDestination, secondDestination]);
     });
@@ -250,12 +249,12 @@ describe('AdjacencyList', () => {
       graph.addVertex(firstDestination);
       graph.addVertex(secondDestination);
       // add edges
-      const firstEdge = new DirectedEdge<string>(defaultVertex, firstDestination);
-      const secondEdge = new DirectedEdge<string>(defaultVertex, secondDestination);
-      graph.addEdge(firstEdge);
-      graph.addEdge(secondEdge);
+      graph.addEdge(defaultVertex, firstDestination);
+      graph.addEdge(defaultVertex, secondDestination);
       // verify edges
-      expect(graph.edgesFrom(defaultVertex)).toEqual([firstEdge, secondEdge]);
+      const firstExpectedEdge = new WeightedDirectedEdge<string, number>(defaultVertex, firstDestination);
+      const secondExpectedEdge = new WeightedDirectedEdge<string, number>(defaultVertex, secondDestination);
+      expect(graph.edgesFrom(defaultVertex)).toEqual([firstExpectedEdge, secondExpectedEdge]);
     });
 
     it('should throw an error if the vertex does not exist', () => {

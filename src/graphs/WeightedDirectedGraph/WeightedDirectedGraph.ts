@@ -1,12 +1,12 @@
-import { AdjacencyList, DirectedEdgeBehavior } from "graphs";
-import { DirectedEdge } from "edges";
+import { AdjacencyList, WeightedDirectedEdgeBehavior } from "graphs";
+import { WeightedDirectedEdge } from "edges";
 import { VertexKey } from "verticies";
 
-export class DirectedGraph<K extends VertexKey> implements DirectedEdgeBehavior<K> {
-  private graph: AdjacencyList<K, DirectedEdge<K>> = new AdjacencyList<K, DirectedEdge<K>>();
+export class WeightedDirectedGraph<K extends VertexKey, W> implements WeightedDirectedEdgeBehavior<K, W> {
+  private graph: AdjacencyList<K, WeightedDirectedEdge<K>> = new AdjacencyList<K, WeightedDirectedEdge<K>>();
   
-  public addEdge(fromVertex: K, toVertex: K): boolean {
-    const newEdge = new DirectedEdge<K>(fromVertex, toVertex);
+  public addEdge(fromVertex: K, toVertex: K, weight: W): boolean {
+    const newEdge = new WeightedDirectedEdge<K>(fromVertex, toVertex, weight);
     return this.graph.addEdge(newEdge);
   }
 

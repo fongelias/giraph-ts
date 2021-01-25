@@ -1,10 +1,11 @@
 import { VertexKey } from "verticies";
 
 // Basic Behaviors
-export interface BaseGraphBehavior<K extends VertexKey> {
+export interface BaseGraphBehavior<K extends VertexKey, E> {
   hasVertex: (vertexKey: K) => boolean;
   adjacent: (fromVertex: K, toVertex: K) => boolean;
   neighbors: (vertexKey: K) => K[];
+  edgesFrom: (vertexKey: K) => E[];
   // Edge behaviors are tied to the atomic implementation, and a "base graph" refers to such implementation
 }
 
@@ -24,7 +25,7 @@ export interface DirectedEdgeBehavior<K extends VertexKey> {
   removeEdge: (fromVertex: K, toVertex: K) => boolean;
 }
 
-export interface WeightedEdgeBehavior<K extends VertexKey, W> {
+export interface WeightedDirectedEdgeBehavior<K extends VertexKey, W> {
   addEdge: (fromVertex: K, toVertex: K, weight: W) => boolean;
   removeEdge: (fromVertex: K, toVertex: K) => boolean;
 }

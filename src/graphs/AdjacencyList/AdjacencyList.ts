@@ -6,7 +6,7 @@ import { BaseGraphBehavior, BasicVertexBehavior } from 'graphs';
 // associates vertex keys with edges
 // is always directed graph
 // basic implementation is tested in DirectedGraph
-export class AdjacencyList<K extends VertexKey, E extends DirectedEdge<K>> implements BaseGraphBehavior<K>, BasicVertexBehavior<K> {
+export class AdjacencyList<K extends VertexKey, E extends DirectedEdge<K>> implements BaseGraphBehavior<K, E>, BasicVertexBehavior<K> {
 	private verticies: Record<K, Nullable<E[]>> = {} as Record<K, Nullable<E[]>>;
 	private static emptyVertexValue = null;
 
@@ -84,6 +84,12 @@ export class AdjacencyList<K extends VertexKey, E extends DirectedEdge<K>> imple
 		this.verifyVerticiesExist(vertexKey);
 
 		return this.getOrCreateEdgeArray(vertexKey).map((edge: DirectedEdge<K>) => edge.toVertex());
+	}
+
+	public edgesFrom(vertexKey: K): E[] {
+		this.verifyVerticiesExist(vertexKey);
+
+		return this.getOrCreateEdgeArray(vertexKey);
 	}
 
 	private getOrCreateEdgeArray(vertexKey: K): E[] {

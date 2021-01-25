@@ -1,4 +1,5 @@
 import { DirectedGraph } from './DirectedGraph';
+import { DirectedEdge } from 'edges';
 
 describe('DirectedGraph', () => {
   const defaultVertex = "some vertex key";
@@ -6,21 +7,6 @@ describe('DirectedGraph', () => {
 
   beforeEach(() => {
     graph = new DirectedGraph<string>();
-  });
-  
-  describe('#hasVerticies', () => {
-    it('should return true if AdjacencyList contains verticies', () => {
-      // verify empty
-      expect(graph.hasVerticies()).toBe(false);
-      // add verticies
-      graph.addVertex(defaultVertex);
-      // verify verticies added
-      expect(graph.hasVerticies()).toBe(true);
-    });
-
-    it('should return false if the graph does not have verticies', () => {
-      expect(graph.hasVerticies()).toBe(false);
-    });
   });
 
   describe('#addEdge', () => {
@@ -62,6 +48,21 @@ describe('DirectedGraph', () => {
       const nonExistentVertex = "this vertex is not on the graph";
       // attempt to add faulty edge
       expect(() => graph.addEdge(defaultVertex, nonExistentVertex)).toThrow();
+    });
+  });
+
+  describe('#hasVerticies', () => {
+    it('should return true if AdjacencyList contains verticies', () => {
+      // verify empty
+      expect(graph.hasVerticies()).toBe(false);
+      // add verticies
+      graph.addVertex(defaultVertex);
+      // verify verticies added
+      expect(graph.hasVerticies()).toBe(true);
+    });
+
+    it('should return false if the graph does not have verticies', () => {
+      expect(graph.hasVerticies()).toBe(false);
     });
   });
 
@@ -227,6 +228,29 @@ describe('DirectedGraph', () => {
     it('should throw an error if the vertex does not exist', () => {
       const nonExistentVertex = "this vertex is not on the graph";
       expect(() => graph.neighbors(nonExistentVertex)).toThrow();
+    });
+  });
+
+  describe('#edgesFrom', () => {
+    it('should return an array of edges from the vertex', () => {
+      // create and add verticies
+      const firstDestination = "some destination";
+      const secondDestination = "another destination";
+      graph.addVertex(defaultVertex);
+      graph.addVertex(firstDestination);
+      graph.addVertex(secondDestination);
+      // add edges
+      graph.addEdge(defaultVertex, firstDestination);
+      graph.addEdge(defaultVertex, secondDestination);
+      // verify edges
+      const firstExpectedEdge = new DirectedEdge<string>(defaultVertex, firstDestination);
+      const secondExpectedEdge = new DirectedEdge<string>(defaultVertex, secondDestination);
+      expect(graph.edgesFrom(defaultVertex)).toEqual([firstExpectedEdge, secondExpectedEdge]);
+    });
+
+    it('should throw an error if the vertex does not exist', () => {
+      const nonExistentVertex = "this vertex is not on the graph";
+      expect(() => graph.edgesFrom(nonExistentVertex)).toThrow();
     });
   });
 });

@@ -1,1 +1,1 @@
-export { Vertex, VertexKey } from './vertex.interface';
+export { VertexKey } from './vertex.interface';

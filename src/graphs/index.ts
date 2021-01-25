@@ -1,3 +1,5 @@
 export { AdjacencyList } from './AdjacencyList';
 
-export { BaseGraphBehavior, BasicVertexBehavior, DirectedEdgeBehavior } from './graph.interface';
+export { DirectedGraph } from './DirectedGraph';
+
+export { BaseGraphBehavior, BasicVertexBehavior, DirectedEdgeBehavior, WeightedDirectedEdgeBehavior } from './graph.interface';
