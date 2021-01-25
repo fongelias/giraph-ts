@@ -2,5 +2,5 @@ export {
   DirectedGraph,
   WeightedDirectedGraph,
   UndirectedGraph,
-  UndirectedWeightedGraph,
+  WeightedUndirectedGraph,
 } from 'graphs';
