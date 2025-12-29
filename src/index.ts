@@ -4,4 +4,5 @@ export {
   UndirectedGraph,
   WeightedUndirectedGraph,
   ObjectGraph,
+  DataGraph,
 } from 'graphs';

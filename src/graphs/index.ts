@@ -10,6 +10,8 @@ export { WeightedUndirectedGraph } from './WeightedUndirectedGraph';
 
 export { ObjectGraph } from './ObjectGraph';
 
+export { DataGraph } from './DataGraph';
+
 export {
   BaseGraph,
   BaseGraphBehavior,
