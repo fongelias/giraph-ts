@@ -1,8 +1,8 @@
-import { AdjacencyList, DirectedEdgeBehavior } from "graphs";
+import { AdjacencyList, BaseGraph, DirectedEdgeBehavior } from "graphs";
 import { DirectedEdge } from "edges";
 import { VertexKey } from "verticies";
 
-export class DirectedGraph<K extends VertexKey> implements DirectedEdgeBehavior<K> {
+export class DirectedGraph<K extends VertexKey> implements BaseGraph<K, DirectedEdge<K>>, DirectedEdgeBehavior<K> {
   private graph: AdjacencyList<K, DirectedEdge<K>> = new AdjacencyList<K, DirectedEdge<K>>();
   
   public addEdge(fromVertex: K, toVertex: K): boolean {

@@ -39,3 +39,8 @@ export interface WeightedUndirectedEdgeBehavior<K extends VertexKey, W> {
   addEdge: (xVertex: K, yVertex: K, weight: W) => boolean;
   removeEdge: (xVertex: K, yVertex: K) => boolean;
 }
+
+// Unified base interface for all graph types
+export interface BaseGraph<K extends VertexKey, E> extends BaseGraphBehavior<K, E>, BasicVertexBehavior<K> {
+  hasVerticies: () => boolean;
+}

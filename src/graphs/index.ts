@@ -8,7 +8,10 @@ export { UndirectedGraph } from './UndirectedGraph';
 
 export { WeightedUndirectedGraph } from './WeightedUndirectedGraph';
 
+export { ObjectGraph } from './ObjectGraph';
+
 export {
+  BaseGraph,
   BaseGraphBehavior,
   BasicVertexBehavior,
   DirectedEdgeBehavior,

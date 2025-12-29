@@ -1,8 +1,8 @@
-import { AdjacencyList, WeightedUndirectedEdgeBehavior } from "graphs";
+import { AdjacencyList, BaseGraph, WeightedUndirectedEdgeBehavior } from "graphs";
 import { WeightedDirectedEdge } from "edges";
 import { VertexKey } from "verticies";
 
-export class WeightedUndirectedGraph<K extends VertexKey, W> implements WeightedUndirectedEdgeBehavior<K, W> {
+export class WeightedUndirectedGraph<K extends VertexKey, W> implements BaseGraph<K, WeightedDirectedEdge<K, W>>, WeightedUndirectedEdgeBehavior<K, W> {
   private graph: AdjacencyList<K, WeightedDirectedEdge<K, W>> = new AdjacencyList<K, WeightedDirectedEdge<K, W>>();
   
   public addEdge(xVertex: K, yVertex: K, weight: W): boolean {

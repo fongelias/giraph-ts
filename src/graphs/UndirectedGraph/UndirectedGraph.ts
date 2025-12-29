@@ -1,8 +1,8 @@
-import { AdjacencyList, UndirectedEdgeBehavior } from "graphs";
+import { AdjacencyList, BaseGraph, UndirectedEdgeBehavior } from "graphs";
 import { DirectedEdge } from "edges";
 import { VertexKey } from "verticies";
 
-export class UndirectedGraph<K extends VertexKey> implements UndirectedEdgeBehavior<K> {
+export class UndirectedGraph<K extends VertexKey> implements BaseGraph<K, DirectedEdge<K>>, UndirectedEdgeBehavior<K> {
   private graph: AdjacencyList<K, DirectedEdge<K>> = new AdjacencyList<K, DirectedEdge<K>>();
   
   public addEdge(xVertex: K, yVertex: K): boolean {

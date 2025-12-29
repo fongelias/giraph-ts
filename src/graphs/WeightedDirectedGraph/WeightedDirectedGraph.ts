@@ -1,8 +1,8 @@
-import { AdjacencyList, WeightedDirectedEdgeBehavior } from "graphs";
+import { AdjacencyList, BaseGraph, WeightedDirectedEdgeBehavior } from "graphs";
 import { WeightedDirectedEdge } from "edges";
 import { VertexKey } from "verticies";
 
-export class WeightedDirectedGraph<K extends VertexKey, W> implements WeightedDirectedEdgeBehavior<K, W> {
+export class WeightedDirectedGraph<K extends VertexKey, W> implements BaseGraph<K, WeightedDirectedEdge<K, W>>, WeightedDirectedEdgeBehavior<K, W> {
   private graph: AdjacencyList<K, WeightedDirectedEdge<K, W>> = new AdjacencyList<K, WeightedDirectedEdge<K, W>>();
   
   public addEdge(fromVertex: K, toVertex: K, weight: W): boolean {
