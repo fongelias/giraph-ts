@@ -54,10 +54,10 @@ export class DataGraph<K extends VertexKey, V = void, E = void> {
     const data = this.vertices.get(key) as V;
 
     // Remove all edges pointing to this vertex
-    for (const [fromKey, edgeList] of this.edges) {
+    for (const [fromKey, edgeList] of Array.from(this.edges.entries())) {
       this.edges.set(
         fromKey,
-        edgeList.filter(edge => edge.to !== key)
+        edgeList.filter((edge: EdgeEntry<K, E>) => edge.to !== key)
       );
     }
 
